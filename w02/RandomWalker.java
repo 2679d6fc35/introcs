@@ -4,23 +4,19 @@ public class RandomWalker {
         int x = 0;
         int y = 0;
         int steps = 0;
-        while (Math.abs(x)+Math.abs(y)<r)
-        {
-            System.out.printf("(%d, %d)\n", x, y);
+        System.out.printf("(%d, %d)\n", x, y);
+        while (Math.abs(x) + Math.abs(y) < r) {
             double rand = Math.random();
-            if (rand<0.25)
-            {
+            if (rand < 0.25) {
                 x += 1;
-            } else if (rand<0.5)
-            {
+            } else if (rand < 0.5) {
                 x -= 1;
-            } else if (rand<0.75)
-            {
+            } else if (rand < 0.75) {
                 y += 1;
-            } else
-            {
+            } else {
                 y -= 1;
             }
+            System.out.printf("(%d, %d)\n", x, y);
             steps += 1;
         }
         System.out.printf("steps = %d", steps);
