@@ -1,3 +1,6 @@
 # ignore all .class files
 *.class
 *.zip
+
+.vscode
+*.xml
