@@ -3,63 +3,60 @@ public class Minesweeper {
         int m = Integer.parseInt(args[0]);
         int n = Integer.parseInt(args[1]);
         int k = Integer.parseInt(args[2]);
-        int mn = m * n;
 
-        int[][] grid = new int[m][n];
+        boolean[][] mines = new boolean[m + 2][n + 2];
+        int[][] counts = new int[m + 2][n + 2];
 
-        // Randomize mine's positions
-        for (int i = 0; i < k; i++) {
-            int Num = (int) (Math.random() * (mn - 1));
-            int I = Num / n;
-            int J = Num % n;
-            while (grid[I][J] == -1) {
-                Num = (int) (Math.random() * (mn - 1));
-                I = Num / n;
-                J = Num % n;
+        int[][] dirs = { { -1, -1 }, { -1, 0 }, { -1, 1 }, { 0, -1 }, { 0, 1 }, { 1, -1 }, { 1, 0 }, { 1, 1 } };
+
+        // Randomize k mines
+        if (k < m * n / 2) {
+            for (int i = 0; i < k; i++) {
+                int I = (int) (Math.random() * (m - 1));
+                int J = (int) (Math.random() * (n - 1));
+                while (mines[I + 1][J + 1] == true) {
+                    I = (int) (Math.random() * (m - 1));
+                    J = (int) (Math.random() * (n - 1));
+                }
+                mines[I + 1][J + 1] = true;
             }
-            grid[I][J] = -1;
+        } else {
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    mines[i + 1][j + 1] = true;
+                }
+            }
 
-            // Update number of mines around
-            // Left
-            if (J != 0)
-                if (grid[I][J - 1] != -1)
-                    grid[I][J - 1]++;
-            // Right
-            if (J != n - 1)
-                if (grid[I][J + 1] != -1)
-                    grid[I][J + 1]++;
-            // Up
-            if (I != 0)
-                if (grid[I - 1][J] != -1)
-                    grid[I - 1][J]++;
-            // Down
-            if (I != m - 1)
-                if (grid[I + 1][J] != -1)
-                    grid[I + 1][J]++;
-            // Left Up
-            if (J != 0 && I != 0)
-                if (grid[I - 1][J - 1] != -1)
-                    grid[I - 1][J - 1]++;
-            // Left Down
-            if (J != 0 && I != m - 1)
-                if (grid[I + 1][J - 1] != -1)
-                    grid[I + 1][J - 1]++;
-            // Right Up
-            if (J != n - 1 && I != 0)
-                if (grid[I - 1][J + 1] != -1)
-                    grid[I - 1][J + 1]++;
-            // Right Down
-            if (J != n - 1 && I != m - 1)
-                if (grid[I + 1][J + 1] != -1)
-                    grid[I + 1][J + 1]++;
+            for (int i = 0; i < m * n - k; i++) {
+                int I = (int) (Math.random() * (m - 1));
+                int J = (int) (Math.random() * (n - 1));
+                while (mines[I + 1][J + 1] == false) {
+                    I = (int) (Math.random() * (m - 1));
+                    J = (int) (Math.random() * (n - 1));
+                }
+                mines[I + 1][J + 1] = false;
+            }
+        }
+
+        // Count the number of neighboring mines
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (mines[i + 1][j + 1]) {
+                    // +1 all non-mine neighboring positions
+                    for (int j2 = 0; j2 < dirs.length; j2++) {
+                        // if (!mines[uI + 1][uJ + 1])
+                        counts[i + dirs[j2][0] + 1][j + dirs[j2][1] + 1]++;
+                    }
+                }
+            }
         }
 
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (grid[i][j] == -1)
-                    System.out.print("*  ");
+                if (mines[i + 1][j + 1])
+                    System.out.printf("*  ");
                 else
-                    System.out.print(grid[i][j] + "  ");
+                    System.out.printf("%d  ", counts[i + 1][j + 1]);
             }
             System.out.printf("\n");
         }

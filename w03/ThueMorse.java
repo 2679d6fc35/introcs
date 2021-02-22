@@ -24,9 +24,9 @@ public class ThueMorse {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (tms[i] == tms[j])
-                    System.out.print("+ ");
+                    System.out.print("+  ");
                 else
-                    System.out.print("- ");
+                    System.out.print("-  ");
             }
             System.out.printf("\n");
         }
